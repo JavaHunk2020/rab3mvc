@@ -17,7 +17,6 @@
  
 	<!-- This is the package name where we keep out model/controller -->
 	<context:component-scan	base-package="com.rab3.controller" />
-	
 		
   <!-- the mvc resources tag does the magic -->
  <mvc:resources mapping="/images/**" location="/images/" />
@@ -27,7 +26,7 @@
 		class="org.springframework.web.servlet.view.UrlBasedViewResolver">
 		<property name="viewClass"
 			value="org.springframework.web.servlet.view.JstlView" />
-		<property name="prefix" value="/" />
+		<property name="prefix" value="/WEB-INF/pages/" />
 		<property name="suffix" value=".jsp" />
 	</bean>
 
@@ -38,6 +37,5 @@
 		<property name="username" value="root" />
 		<property name="password" value="mysql@1234" />
 	</bean>
-	
  
  </beans>

@@ -35,17 +35,24 @@ public class AuthController {
 		return "aha";   //   /aha.jsp
 	}
 	
+	@GetMapping({"/auth","/login","/","index"})
+	public String showLogin() {
+		 return "login";
+	}
+	
 	//action=auth
 	//method = POST
 	@PostMapping("/auth")
-	public String auth(@RequestParam String username,@RequestParam String password,Model model,HttpSession  session) {
+	public String auth(@RequestParam String username,@RequestParam String password,
+			Model model,HttpSession  session) {
 			JdbcTemplate jdbcTemplate=new JdbcTemplate(ds);
 			String sql="select  *  from profiles_tbl where username =? and password = ?";
-			List<ProfileDTO> profileDTOs=jdbcTemplate.query(sql, new Object[] {username,password},new BeanPropertyRowMapper(ProfileDTO.class));
+			List<ProfileDTO> profileDTOs=jdbcTemplate.query(sql, new Object[] {username,password},
+					new BeanPropertyRowMapper(ProfileDTO.class));
 			if(profileDTOs.size()==1) {
 				session.setAttribute("profileDTO", profileDTOs.get(0));
 				model.addAttribute("magic", profileDTOs.get(0));
-				return "home";
+				return "home";  //     /home.jsp
 			}else {
 				model.addAttribute("msg", "Sorry!! username and password are not valid!!!!!!!!!!!!!!!");
 				return "login";

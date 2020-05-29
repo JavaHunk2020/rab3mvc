@@ -14,7 +14,7 @@ public class ProfileDTO {
 	private String name;
 	private String email;
 	private String gender;
-	private String image;
+	private String photo;
 	private Timestamp doe;
 	private String role;
 	
@@ -83,18 +83,19 @@ public class ProfileDTO {
 		this.gender = gender;
 	}
 
-	public String getImage() {
-		return image;
+
+	public String getPhoto() {
+		return photo;
 	}
 
-	public void setImage(String image) {
-		this.image = image;
+	public void setPhoto(String photo) {
+		this.photo = photo;
 	}
 
 	@Override
 	public String toString() {
 		return "ProfileDTO [aid=" + aid + ", username=" + username + ", password=" + password + ", name=" + name
-				+ ", email=" + email + ", gender=" + gender + ", image=" + image + "]";
+				+ ", email=" + email + ", gender=" + gender + ", photo=" + photo + "]";
 	}
 
 }

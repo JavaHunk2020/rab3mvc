@@ -1,3 +1,5 @@
+<%@page import="com.rab3.controller.dto.ProfileDTO"%>
+<%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
@@ -27,19 +29,47 @@
 			src="images/group.png" style="height: 150px;" class="img-thumbnail">
 			</a>
 		<hr />
-		<h3>${msg}</h3>
-		<h4>Hello ! We welcome you   ${magic.name}!!!!!!!!!!!!!!!!!!!!!!!</h4>
-		<h4>Email : ${magic.email}</h4>
-			<h4>Gender : ${magic.gender}</h4>
-				<h4>Role : ${magic.role}</h4>
-				<h4>Unique Id : ${magic.aid}
-				<a href="editProfile?aid=${magic.aid}">
+		<h4>Profiles Data</h4>
+		<hr />
+		 <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>Username</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Gender</th>
+        <th>Photo</th>
+        <th>Created Date</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+    
+    <%
+    List<ProfileDTO> profileDTOs=(List<ProfileDTO>)request.getAttribute("profileDTOs");
+    for(ProfileDTO dto:profileDTOs) {
+    %>
+      <tr>
+        <td><%=dto.getUsername() %></td>
+          <td><%=dto.getName() %></td>
+            <td><%=dto.getEmail() %></td>
+              <td><%=dto.getGender() %></td>
+        <td><img src="<%=dto.getPhoto()%>"  style="height: 80px;"></td>
+          <td><%=dto.getDoe() %></td>
+         <td>
+          <a href="deleteProfile?uname=<%=dto.getUsername() %>">
+         <img src="images/icons8-delete-100.png"  style="height: 80px;">
+         </a>
+         &nbsp;  &nbsp;  &nbsp;
+         <a href="editProfile?aid=<%=dto.getAid() %>">
 					<img src="images/edit.png" style="height: 24px;">
 				</a>
-				</h4>
-				
-		<img src="images/welcome.png" class="rounded-circle">
-		<hr />
+         </td>
+      </tr>
+   <%} %>
+    </tbody>
+  </table>
+		
 		<a href="login.jsp">
 			<button type="button" class="btn btn-primary">Back</button>
 		</a>

@@ -23,17 +23,14 @@
       <span style="font-size: 18px;color: red;">${msg}</span>
       <br/>
       <div style="width: 50%">
-      <form action="forgotPassword">
+      <form action="forgotPassword" method="post">
       <label><b>Email Id</b></label>
       <input type="email" name="email"  class="form-control"  value="${param.email}">
       <br/>
-   <a href="forgotPassword.jsp">
     	  <button type="submit" class="btn btn-primary">Forgot Pass</button>
-      </a>
-       <a href="login.jsp">
+       <a href="${pageContext.request.contextPath}/auth">
     	  <button type="button" class="btn btn-danger">Login</button>
       </a>
-      
       <hr/>
       <h5 style="color: red;font-weight: bold;">${password}</h5>
      

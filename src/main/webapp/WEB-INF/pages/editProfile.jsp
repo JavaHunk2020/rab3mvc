@@ -44,7 +44,7 @@
             <br/>
       <br/>
       <button type="submit" class="btn btn-primary">Update</button>
-       <a href="login.jsp">
+       <a href="${pageContext.request.contextPath}/auth">
       <button type="button" class="btn btn-danger">Login</button>
       </a>
       </form>

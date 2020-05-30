@@ -17,8 +17,8 @@
    <div class="container">
       <br/>
      <img src="images/banner-home-middle.png" style="height: 150px;"  class="img-thumbnail">
-   <img src="images/sleeping.png" style="height: 150px;" class="img-thumbnail">
-    <img src="images/student.png" style="height: 150px;" class="img-thumbnail">
+   <img src="${pageContext.request.contextPath}/images/sleeping.png" style="height: 150px;" class="img-thumbnail">
+    <img src="${pageContext.request.contextPath}/images/student.png" style="height: 150px;" class="img-thumbnail">
       <hr/>
       <span style="font-size: 18px;color: red;">${msg}</span>
       <br/>
@@ -31,11 +31,11 @@
       <br/>
       <button type="submit" class="btn btn-primary">Login</button>
       <button type="reset" class="btn btn-info">Clear</button>
-       <a href="register.jsp">
+       <a href="${pageContext.request.contextPath}/register">
     	  <button type="button" class="btn btn-danger">Register</button>
       </a>
       
-        <a href="forgotPassword.jsp">
+        <a href="${pageContext.request.contextPath}/forgetPass">
     	  <button type="button" class="btn btn-warning">Forgot Pass</button>
       </a>
       </form>

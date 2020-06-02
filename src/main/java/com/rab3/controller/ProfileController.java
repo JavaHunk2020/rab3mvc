@@ -1,16 +1,8 @@
 package com.rab3.controller;
 
-import java.sql.Timestamp;
-import java.util.Date;
 import java.util.List;
 
-import javax.sql.DataSource;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.dao.DataAccessException;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,17 +11,17 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.rab3.controller.dto.ProfileDTO;
-import com.rab3.dao.ProfileDao;
+import com.rab3.service.ProfileService;
 
 @Controller
 public class ProfileController {
 
 	@Autowired
-	private ProfileDao profileDao;
+	private ProfileService profileService;
 
 	@PostMapping("/forgotPassword")
 	public String forgetPasswordPage(@RequestParam String email, Model model) {
-		   String passsoword=profileDao.forgetPassword(email);
+		   String passsoword=profileService.findPassword(email);
 			if(passsoword!=null) {
 				model.addAttribute("password", "Hello your password is  =  " + passsoword);				
 			}else {
@@ -50,21 +42,21 @@ public class ProfileController {
 
 	@PostMapping("/register")
 	public String registerPostPage(@ModelAttribute ProfileDTO profileDTO, Model model) {
-        profileDao.saveProfile(profileDTO);
+		profileService.persist(profileDTO);
 		model.addAttribute("msg", "You are successfully registered!!!");
 		return "register";
 	}
 
 	@GetMapping("/editProfile")
 	public String editProfile(@RequestParam int aid, Model model) {
-		ProfileDTO profileDTO = profileDao.findById(aid);
+		ProfileDTO profileDTO = profileService.findProfileById(aid);
 		model.addAttribute("profileDTO", profileDTO);
 		return "editProfile";
 	}
 
 	@PostMapping("/updateProfile")
 	public String postEditProfile(@ModelAttribute ProfileDTO profileDTO, Model model) {
-		profileDao.update(profileDTO);
+		profileService.updateProfila(profileDTO);
 		model.addAttribute("magic", profileDTO);
 		model.addAttribute("msg", "Your profile is successfully updated!!");
 		return "home";
@@ -72,7 +64,7 @@ public class ProfileController {
 
 	@GetMapping("/profiles")
 	public String showProfiles(Model model) {
-		List<ProfileDTO> profileDTOs = profileDao.findAll();
+		List<ProfileDTO> profileDTOs = profileService.findProfiles();
 		model.addAttribute("profileDTOs", profileDTOs);
 		return "profiles";
 	}

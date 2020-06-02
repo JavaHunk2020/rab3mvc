@@ -38,6 +38,10 @@
         <a href="${pageContext.request.contextPath}/forgetPass">
     	  <button type="button" class="btn btn-warning">Forgot Pass</button>
       </a>
+      
+       <a href="${pageContext.request.contextPath}/search">
+    	  <button type="button" class="btn btn-primary">Search</button>
+      </a>
       </form>
       </div>
    </div>

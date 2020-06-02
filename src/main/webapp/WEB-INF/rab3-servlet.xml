@@ -17,8 +17,15 @@
  
 	<!-- This is the package name where we keep out model/controller -->
 	<context:component-scan	base-package="com.rab3.controller" />
+	
+	<!-- scan the service to create bean -->
+	<context:component-scan	base-package="com.rab3.service" />
+
      <!-- Do not forget to scan this package for dao layer otherwise bean will not created -->	
 	<context:component-scan	base-package="com.rab3.dao" />
+
+	
+	 
 		
   <!-- the mvc resources tag does the magic -->
  <mvc:resources mapping="/images/**" location="/images/" />

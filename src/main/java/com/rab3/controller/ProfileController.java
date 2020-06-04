@@ -1,6 +1,10 @@
 package com.rab3.controller;
 
+import java.io.IOException;
 import java.util.List;
+
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,6 +22,24 @@ public class ProfileController {
 
 	@Autowired
 	private ProfileService profileService;
+	
+	
+	@GetMapping("/imageLoader")
+	public void showImage(@RequestParam int aid,
+			HttpServletResponse httpServletResponse) throws IOException {
+		byte[] photo = profileService.findPhotoById(aid);
+		//I am going to write photo into reponse
+		httpServletResponse.setContentType("image/png");
+		ServletOutputStream outputStream=httpServletResponse.getOutputStream();
+		if(photo!=null && photo.length>0) {
+			//writtng photo as a byte array into the response body
+			outputStream.write(photo);
+		}else {
+			outputStream.write(new byte[] {});
+		}
+		//go to the client
+		outputStream.flush();
+	}
 
 	@PostMapping("/forgotPassword")
 	public String forgetPasswordPage(@RequestParam String email, Model model) {

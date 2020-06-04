@@ -11,5 +11,6 @@ public interface ProfileDao {
 	ProfileDTO findById(int aid);
 	String update(ProfileDTO profileDTO);
 	List<ProfileDTO> findAll();
+	byte[] findPhotoById(int aid);
 
 }

@@ -14,6 +14,13 @@ public class ProfileServiceImpl  implements  ProfileService{
 	@Autowired
 	private ProfileDao profileDao;
 	
+	
+	@Override
+	public byte[] findPhotoById(int aid) {
+		byte[] imaga=profileDao.findPhotoById(aid);
+		return imaga;
+	}
+	
 	@Override
 	public String findPassword(String email) {
 		String result=profileDao.forgetPassword(email);

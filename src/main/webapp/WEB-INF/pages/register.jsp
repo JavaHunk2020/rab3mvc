@@ -23,7 +23,7 @@
       <span style="font-size: 18px;color: red;">${msg}</span>
       <br/>
       <div style="width: 50%">
-      <form action="register" method="post">
+      <form action="register" method="post" enctype="multipart/form-data">
       <label>Username</label>
       <input type="text" name="username"  class="form-control">
        <label>Password</label>
@@ -40,7 +40,7 @@
          <option>Female</option>
       </select>
         <label>Image</label>
-      <input type="text" name="photo"  class="form-control">
+      <input type="file" name="photo"  class="form-control" style="background-color: #fadbff;">
       
       <br/>
       <button type="submit" class="btn btn-primary">Register</button>

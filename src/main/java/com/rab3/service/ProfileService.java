@@ -16,4 +16,6 @@ public interface ProfileService {
 
 	List<ProfileDTO> findProfiles();
 
+	byte[] findPhotoById(int aid);
+
 }

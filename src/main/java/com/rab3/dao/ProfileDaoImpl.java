@@ -18,7 +18,7 @@ import org.springframework.jdbc.support.lob.DefaultLobHandler;
 import org.springframework.jdbc.support.lob.LobHandler;
 import org.springframework.stereotype.Repository;
 
-import com.rab3.controller.dto.ProfileDTO;
+import com.rab3.dao.entity.ProfileEntity;
 
 //java8
 @Repository
@@ -41,19 +41,19 @@ public class ProfileDaoImpl  implements ProfileDao{
 	}
 	
 	@Override
-	public String saveProfile(ProfileDTO profileDTO) {
+	public String saveProfile(ProfileEntity profileEntity) {
 		JdbcTemplate jdbcTemplate = new JdbcTemplate(ds);
 		Timestamp timestamp=new Timestamp(new Date().getTime());
         LobHandler lobHandler=new DefaultLobHandler();
         SqlLobValue sqlLobValue=null;
 		try {
-			sqlLobValue = new SqlLobValue(profileDTO.getPhoto().getBytes(),lobHandler);
+			sqlLobValue = new SqlLobValue(profileEntity.getPhoto().getBytes(),lobHandler);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
         jdbcTemplate.update("insert into profiles_tbl(username,password,name,email,gender,photo,doe)  values(?,?,?,?,?,?,?)",
-				new Object[]{profileDTO.getUsername(),profileDTO.getPassword(),profileDTO.getName(),
-				profileDTO.getEmail(),profileDTO.getGender(),sqlLobValue,timestamp},
+				new Object[]{profileEntity.getUsername(),profileEntity.getPassword(),profileEntity.getName(),
+						profileEntity.getEmail(),profileEntity.getGender(),sqlLobValue,timestamp},
 				new int[] {Types.VARCHAR,Types.VARCHAR,Types.VARCHAR,Types.VARCHAR,Types.VARCHAR,Types.BLOB,Types.TIMESTAMP});
 		return "success";
 	}
@@ -67,30 +67,45 @@ public class ProfileDaoImpl  implements ProfileDao{
 	}
 	
 	@Override
-	public ProfileDTO findById(int aid) {
+	public ProfileEntity findById(int aid) {
 		JdbcTemplate jdbcTemplate = new JdbcTemplate(ds);
-		String sql = "select  *  from profiles_tbl where aid =" + aid;
-		ProfileDTO profileDTO = jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(ProfileDTO.class));
-		return profileDTO;
+		String sql = "select  aid,username,password,name,email,gender,doe,role from profiles_tbl where aid =" + aid;
+		ProfileEntity profileEntity = jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(ProfileEntity.class));
+		return profileEntity;
 	}
 	
 	@Override
-	public String update(ProfileDTO profileDTO) {
-		String sql = "update profiles_tbl set username=? ,name =? ,email =? ,gender =? ,photo= ?  where aid =?";
-		Object[] data = { profileDTO.getUsername(), profileDTO.getName(), profileDTO.getEmail(), profileDTO.getGender(),
-				profileDTO.getPhoto(), profileDTO.getAid() };
-		JdbcTemplate jdbcTemplate = new JdbcTemplate(ds);
-		jdbcTemplate.update(sql, data);
+	public String update(ProfileEntity profileEntity) {
+		 LobHandler lobHandler=new DefaultLobHandler();
+	        SqlLobValue sqlLobValue=null;
+			JdbcTemplate jdbcTemplate = new JdbcTemplate(ds);
+			try {
+				if(profileEntity.getPhoto()==null || profileEntity.getPhoto().getBytes().length<3) {
+					jdbcTemplate.update("update profiles_tbl set username=? ,name =? ,email =? ,gender =?  where aid =?",
+							new Object[]{profileEntity.getUsername(),profileEntity.getName(),
+									profileEntity.getEmail(),profileEntity.getGender(),profileEntity.getAid()},
+							new int[] {Types.VARCHAR,Types.VARCHAR,Types.VARCHAR,Types.VARCHAR,Types.INTEGER});
+				}else {
+					 sqlLobValue = new SqlLobValue(profileEntity.getPhoto().getBytes(),lobHandler);
+					jdbcTemplate.update("update profiles_tbl set username=? ,name =? ,email =? ,gender =? ,photo= ?  where aid =?",
+							new Object[]{profileEntity.getUsername(),profileEntity.getName(),
+									profileEntity.getEmail(),profileEntity.getGender(),sqlLobValue,profileEntity.getAid()},
+							new int[] {Types.VARCHAR,Types.VARCHAR,Types.VARCHAR,Types.VARCHAR,Types.BLOB,Types.INTEGER});
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		
 		return "success";
 	}
 
 	@Override
-	public List<ProfileDTO> findAll() {
+	public List<ProfileEntity> findAll() {
 		JdbcTemplate jdbcTemplate = new JdbcTemplate(ds);
-		List<ProfileDTO> profileDTOs = jdbcTemplate.query(
+		List<ProfileEntity> profileEntities = jdbcTemplate.query(
 				"select  aid,username,password,name,email,gender,doe,role  from profiles_tbl",
-				new BeanPropertyRowMapper<>(ProfileDTO.class));
-		return profileDTOs;
+				new BeanPropertyRowMapper<>(ProfileEntity.class));
+		return profileEntities;
 	}
 
 }

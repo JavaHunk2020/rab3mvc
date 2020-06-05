@@ -23,7 +23,7 @@
       <span style="font-size: 18px;color: blue;font-weight: bold;">Edit Profile Page</span>
       <hr/>
       <div style="width: 50%">
-      <form action="updateProfile" method="post">
+      <form action="updateProfile" method="post" enctype="multipart/form-data">
        <input type="hidden"  name="aid"  value="${profileDTO.aid}">
       <label>Username</label>
       <input type="text" name="username"  class="form-control"   value="${profileDTO.username}">
@@ -39,8 +39,8 @@
          <option  ${profileDTO.gender=='Female' ? 'selected' :''}>Female</option>
       </select>
         <label>Image</label>
-      <input type="text" name="photo"  class="form-control" value="${profileDTO.photo}">
-        <img src="${profileDTO.photo}" style="height: 100px;"  class="img-thumbnail">
+      <input type="file" name="photo"  class="form-control">
+        <img src="${pageContext.request.contextPath}/imageLoader?aid=${profileDTO.aid}" style="height: 100px;"  class="img-thumbnail">
             <br/>
       <br/>
       <button type="submit" class="btn btn-primary">Update</button>

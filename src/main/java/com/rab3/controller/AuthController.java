@@ -46,7 +46,7 @@ public class AuthController {
 	public String auth(@RequestParam String username,@RequestParam String password,
 			Model model,HttpSession  session) {
 			JdbcTemplate jdbcTemplate=new JdbcTemplate(ds);
-			String sql="select  *  from profiles_tbl where username =? and password = ?";
+			String sql="select aid, username,password,email,name,gender,doe,role from profiles_tbl where username =? and password = ?";
 			List<ProfileDTO> profileDTOs=jdbcTemplate.query(sql, new Object[] {username,password},
 					new BeanPropertyRowMapper(ProfileDTO.class));
 			if(profileDTOs.size()==1) {

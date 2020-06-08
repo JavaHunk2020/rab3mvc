@@ -2,8 +2,18 @@ package com.rab3.dao.entity;
 
 import java.sql.Timestamp;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
 import org.springframework.web.multipart.MultipartFile;
 
+@Entity
+@Table(name="profile_hbm_tbl")
 public class ProfileEntity {
 	private int aid;
 	private String username;
@@ -14,6 +24,7 @@ public class ProfileEntity {
 	private MultipartFile photo;
 	private Timestamp doe;
 	private String role;
+	private byte[]  hphoto;
 	
 	public String getRole() {
 		return role;
@@ -31,6 +42,8 @@ public class ProfileEntity {
 		this.doe = doe;
 	}
 
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	public int getAid() {
 		return aid;
 	}
@@ -39,6 +52,7 @@ public class ProfileEntity {
 		this.aid = aid;
 	}
 
+	@Column(length=90)
 	public String getUsername() {
 		return username;
 	}
@@ -47,6 +61,7 @@ public class ProfileEntity {
 		this.username = username;
 	}
 
+	@Column(length=23)
 	public String getPassword() {
 		return password;
 	}
@@ -63,6 +78,7 @@ public class ProfileEntity {
 		this.name = name;
 	}
 
+	@Column(length=100)
 	public String getEmail() {
 		return email;
 	}
@@ -80,12 +96,23 @@ public class ProfileEntity {
 	}
 
 
+	@Transient
 	public MultipartFile getPhoto() {
 		return photo;
 	}
 
 	public void setPhoto(MultipartFile photo) {
 		this.photo = photo;
+	}
+	
+	
+  @Column(columnDefinition="longblob")
+	public byte[] getHphoto() {
+		return hphoto;
+	}
+
+	public void setHphoto(byte[] hphoto) {
+		this.hphoto = hphoto;
 	}
 
 	@Override

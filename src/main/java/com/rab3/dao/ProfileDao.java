@@ -12,5 +12,8 @@ public interface ProfileDao {
 	String update(ProfileEntity profileEntity);
 	List<ProfileEntity> findAll();
 	byte[] findPhotoById(int aid);
-
+	//This default version was introduced in java8
+	default ProfileEntity auth(String username, String password) {
+		return null;
+	}
 }

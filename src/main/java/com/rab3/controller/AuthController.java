@@ -21,14 +21,18 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.rab3.controller.dto.ProfileDTO;
+import com.rab3.service.ProfileService;
 import com.rab3.utils.AppDBConnection;
 
 @Controller
 public class AuthController {
 	
-	@Autowired
+	/*@Autowired
 	@Qualifier("pkdataSource")
-	private DataSource ds;
+	private DataSource ds;*/
+	
+	@Autowired
+	private ProfileService profileService;
 	
 	@GetMapping("/foo")
 	public String helloWorld() {
@@ -45,13 +49,10 @@ public class AuthController {
 	@PostMapping("/auth")
 	public String auth(@RequestParam String username,@RequestParam String password,
 			Model model,HttpSession  session) {
-			JdbcTemplate jdbcTemplate=new JdbcTemplate(ds);
-			String sql="select aid, username,password,email,name,gender,doe,role from profiles_tbl where username =? and password = ?";
-			List<ProfileDTO> profileDTOs=jdbcTemplate.query(sql, new Object[] {username,password},
-					new BeanPropertyRowMapper(ProfileDTO.class));
-			if(profileDTOs.size()==1) {
-				session.setAttribute("profileDTO", profileDTOs.get(0));
-				model.addAttribute("magic", profileDTOs.get(0));
+			ProfileDTO profileDTO=profileService.auth(username, password);
+			if(profileDTO!=null) {
+				session.setAttribute("profileDTO", profileDTO);
+				model.addAttribute("magic", profileDTO);
 				return "home";  //     /home.jsp
 			}else {
 				model.addAttribute("msg", "Sorry!! username and password are not valid!!!!!!!!!!!!!!!");

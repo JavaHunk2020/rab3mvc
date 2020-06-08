@@ -18,4 +18,6 @@ public interface ProfileService {
 
 	byte[] findPhotoById(int aid);
 
+	ProfileDTO auth(String username, String password);
+
 }

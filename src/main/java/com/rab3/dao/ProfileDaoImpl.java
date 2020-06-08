@@ -6,6 +6,7 @@ import java.sql.Types;
 import java.util.Date;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,11 @@ import org.springframework.jdbc.core.support.SqlLobValue;
 import org.springframework.jdbc.support.lob.DefaultLobHandler;
 import org.springframework.jdbc.support.lob.LobHandler;
 import org.springframework.stereotype.Repository;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import com.rab3.controller.dto.ProfileDTO;
 import com.rab3.dao.entity.ProfileEntity;
 
 //java8
@@ -27,6 +32,7 @@ public class ProfileDaoImpl  implements ProfileDao{
 	@Autowired
 	@Qualifier("pkdataSource")
 	private DataSource ds;
+	
 	
 	@Override
 	public String forgetPassword(String email) {

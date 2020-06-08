@@ -1,15 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:mvc="http://www.springframework.org/schema/mvc"
-	xmlns:context="http://www.springframework.org/schema/context"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="
-        http://www.springframework.org/schema/beans     
-        http://www.springframework.org/schema/beans/spring-beans.xsd
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xmlns:aop="http://www.springframework.org/schema/aop"
+    xmlns:mvc="http://www.springframework.org/schema/mvc"
+    xmlns:tx="http://www.springframework.org/schema/tx" xmlns:context="http://www.springframework.org/schema/context"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd 
+    http://www.springframework.org/schema/aop 
+    http://www.springframework.org/schema/aop/spring-aop.xsd 
         http://www.springframework.org/schema/mvc 
         http://www.springframework.org/schema/mvc/spring-mvc.xsd
-        http://www.springframework.org/schema/context 
-        http://www.springframework.org/schema/context/spring-context.xsd">
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context.xsd
+    http://www.springframework.org/schema/tx
+    http://www.springframework.org/schema/tx/spring-tx.xsd">
  
  
     <!-- Enabling all the spring mvc features -->
@@ -49,5 +53,33 @@
 		<property name="username" value="root" />
 		<property name="password" value="mysql@1234" />
 	</bean>
+	
+	
+	<!-- 
+       Create a session factory
+     -->
+      <bean id="psessionFactory"   class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+        <property name="dataSource"      ref="pkdataSource"/>
+        <property name="packagesToScan"  value="com.rab3.dao.entity"/>
+        <property name="hibernateProperties">
+            <props>
+            <!-- below will generate schema for you -->
+                <prop key="hibernate.hbm2ddl.auto">update</prop>    
+                                 <!-- below will generate database specific query -->
+                   <prop key="hibernate.dialect">org.hibernate.dialect.MySQL5InnoDBDialect</prop>
+                 <!-- Below will print the query on console --> 
+                <prop key="hibernate.show_sql">true</prop>
+            </props>
+        </property>
+    </bean>
+    
+       <bean id="transactionManager"    class="org.springframework.orm.hibernate5.HibernateTransactionManager">
+                <property name="sessionFactory" ref="psessionFactory"/>
+    </bean>
+    
+    <!-- 
+    @Transactional
+    enable the configuration of transactional behavior based on annotations -->
+	<tx:annotation-driven transaction-manager="transactionManager" />
  
  </beans>

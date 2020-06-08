@@ -1,10 +1,14 @@
 package com.rab3.service;
 
+import java.io.IOException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.rab3.controller.dto.ProfileDTO;
@@ -15,7 +19,16 @@ import com.rab3.dao.entity.ProfileEntity;
 public class ProfileServiceImpl  implements  ProfileService{
    
 	@Autowired
+	@Qualifier("profileOrmDaoImpl")
 	private ProfileDao profileDao;
+	
+	@Override
+	public  ProfileDTO auth(String username, String password) {
+		ProfileEntity result=profileDao.auth(username,password);
+		ProfileDTO profileDTO=new ProfileDTO();
+		BeanUtils.copyProperties(result, profileDTO);
+		return profileDTO;
+	}
 	
 	
 	@Override
@@ -34,6 +47,14 @@ public class ProfileServiceImpl  implements  ProfileService{
 	public String persist(ProfileDTO profileDTO) {
 		ProfileEntity profileEntity=new ProfileEntity();
 		BeanUtils.copyProperties(profileDTO, profileEntity);
+		try {
+			profileEntity.setHphoto(profileDTO.getPhoto().getBytes());
+			profileEntity.setRole("customer");
+			profileEntity.setDoe(new Timestamp(new Date().getTime()));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
 		String result=profileDao.saveProfile(profileEntity);
 		return result;
 	}
